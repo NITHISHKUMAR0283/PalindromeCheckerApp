@@ -1,29 +1,27 @@
 import java.util.Scanner;
 import java.util.Stack;
-import java.util.Queue;
-import java.util.LinkedList;
+import java.util.Deque;
+import java.util.ArrayDeque;
 
 public class palindromecheckerapp{
     public static void main(String[] args){
         Scanner input = new Scanner(System.in);
         System.out.println("Enter a string");
-        Stack<Character> stack = new Stack<>();
-        Queue <Character> que = new LinkedList<>();
+        Deque<Character> deque = new ArrayDeque<>();
         String str = input.nextLine();
         int size = str.length();
         for ( char c :str.toCharArray()){
-            stack.push(c);
-            que.add(c);
+            deque.addLast(c);
         }
         int i =0;
-        while(!stack.isEmpty()){
-            if (stack.pop()!=que.remove()){
-                System.out.println("It is not a palindrome");
+        while(!deque.isEmpty()){
+            if (deque.removeFirst()!=deque.removeLast()){
+                System.out.println("IT is not a palindrome");
                 break;         }
             i++;
         }
         if (i==size){
-            System.out.println("It is a palindrome");
+            System.out.println("IT is a palindrome");
         }
     }
 }
