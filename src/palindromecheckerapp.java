@@ -1,24 +1,38 @@
 import java.util.Scanner;
-public class UseCase10PalindromeCheckerApp {
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        System.out.println("Enter a string");
-        String str = input.nextLine();
-        str = str.replaceAll("\\s+", "").toLowerCase();
-        if (isPalindrome(str, 0, str.length() - 1)) {
-            System.out.println("It is a palindrome");
-        } else {
-            System.out.println("It is not a palindrome");
-        }
+
+class PalindromeChecker {
+    private String text;
+
+    public PalindromeChecker(String text) {
+        this.text = text.replaceAll("\\s+", "").toLowerCase();
     }
 
-    static boolean isPalindrome(String str, int start, int end) {
-        if (start >= end) {
-            return true;
+    public boolean checkPalindrome() {
+        int start = 0;
+        int end = text.length() - 1;
+        while (start < end) {
+            if (text.charAt(start) != text.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
         }
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
+        return true;
+    }
+}
+
+public class UseCase11PalindromeCheckerApp {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter a string to check for palindrome:");
+        String userInput = input.nextLine();
+
+        PalindromeChecker checker = new PalindromeChecker(userInput);
+
+        if (checker.checkPalindrome()) {
+            System.out.println("Yes! '" + userInput + "' is a palindrome.");
+        } else {
+            System.out.println("Nope! '" + userInput + "' is not a palindrome.");
         }
-        return isPalindrome(str, start + 1, end - 1);
     }
 }
