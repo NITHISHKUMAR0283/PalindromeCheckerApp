@@ -5,6 +5,7 @@ import java.util.Deque;
 
 interface PalindromeStrategy {
     boolean isPalindrome(String text);
+    String getName();
 }
 
 class StackStrategy implements PalindromeStrategy {
@@ -19,6 +20,7 @@ class StackStrategy implements PalindromeStrategy {
         }
         return true;
     }
+    public String getName() { return "Stack Strategy"; }
 }
 
 class DequeStrategy implements PalindromeStrategy {
@@ -33,45 +35,43 @@ class DequeStrategy implements PalindromeStrategy {
         }
         return true;
     }
+    public String getName() { return "Deque Strategy"; }
 }
 
-class PalindromeChecker {
-    private PalindromeStrategy strategy;
-
-    public PalindromeChecker(PalindromeStrategy strategy) {
-        this.strategy = strategy;
+class SimpleLoopStrategy implements PalindromeStrategy {
+    public boolean isPalindrome(String text) {
+        text = text.replaceAll("\\s+", "").toLowerCase();
+        int start = 0, end = text.length() - 1;
+        while (start < end) {
+            if (text.charAt(start++) != text.charAt(end--)) return false;
+        }
+        return true;
     }
-
-    public boolean check(String text) {
-        return strategy.isPalindrome(text);
-    }
-
-    public void setStrategy(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
+    public String getName() { return "Simple Loop Strategy"; }
 }
 
-public class UseCase12PalindromeCheckerApp {
+public class UseCase13PalindromeCheckerApp {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        System.out.println("Enter a string to check for palindrome:");
+        System.out.println("Enter a string to check for palindrome performance:");
         String userInput = input.nextLine();
 
-        System.out.println("Choose a strategy: 1 = Stack, 2 = Deque");
-        int choice = input.nextInt();
+        PalindromeStrategy[] strategies = {
+            new StackStrategy(),
+            new DequeStrategy(),
+            new SimpleLoopStrategy()
+        };
 
-        PalindromeStrategy strategy;
-        if (choice == 1) {
-            strategy = new StackStrategy();
-        } else {
-            strategy = new DequeStrategy();
-        }
+        System.out.println("\nPerformance comparison:");
+        for (PalindromeStrategy strategy : strategies) {
+            long startTime = System.nanoTime();
+            boolean result = strategy.isPalindrome(userInput);
+            long endTime = System.nanoTime();
+            long duration = endTime - startTime;
 
-        PalindromeChecker checker = new PalindromeChecker(strategy);
-        if (checker.check(userInput)) {
-            System.out.println("Yes! '" + userInput + "' is a palindrome.");
-        } else {
-            System.out.println("Nope! '" + userInput + "' is not a palindrome.");
+            System.out.println(strategy.getName() + ": " +
+                               (result ? "Palindrome" : "Not Palindrome") +
+                               " | Time taken: " + duration + " ns");
         }
     }
 }
