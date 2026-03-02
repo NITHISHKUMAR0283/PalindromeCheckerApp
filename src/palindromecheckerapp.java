@@ -1,9 +1,10 @@
 import java.util.Scanner;
-public class palindromecheckerapp {
+public class UseCase10PalindromeCheckerApp {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         System.out.println("Enter a string");
         String str = input.nextLine();
+        str = str.replaceAll("\\s+", "").toLowerCase();
         if (isPalindrome(str, 0, str.length() - 1)) {
             System.out.println("It is a palindrome");
         } else {
